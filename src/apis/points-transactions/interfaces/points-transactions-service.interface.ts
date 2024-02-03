@@ -1,5 +1,4 @@
 import { IAuthUser } from 'src/apis/commons/interfaces/context';
-import { $Enums } from '@prisma/client';
 import {
   POINT_TRANSACTION_STATUS_ENUM,
   PointTransaction,
@@ -76,7 +75,7 @@ export interface IPointsTransactionsServiceCheckHasCancelablePoint {
     id: string;
     impUid: string;
     amount: number;
-    status: $Enums.POINT_TRANSACTION_STATUS_ENUM;
+    status: POINT_TRANSACTION_STATUS_ENUM;
     userId: string;
     createdAt: Date;
   })[];

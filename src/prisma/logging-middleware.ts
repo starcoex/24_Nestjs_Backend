@@ -1,17 +1,17 @@
-import { Prisma } from '@prisma/client';
+// import { Prisma } from '@prisma/client';
 
-function loggingMiddleware(): Prisma.Middleware {
-  return async (params, next) => {
-    const before = Date.now();
+// function loggingMiddleware(): Prisma.Middleware {
+//   return async (params, next) => {
+//     const before = Date.now();
 
-    const result = await next(params);
+//     const result = await next(params);
 
-    const after = Date.now();
+//     const after = Date.now();
 
-    console.log(
-      `Query ${params.model}.${params.action} took ${after - before}ms`,
-    );
+//     console.log(
+//       `Query ${params.model}.${params.action} took ${after - before}ms`,
+//     );
 
-    return result;
-  };
-}
+//     return result;
+//   };
+// }

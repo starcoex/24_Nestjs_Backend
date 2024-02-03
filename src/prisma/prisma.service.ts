@@ -9,7 +9,7 @@ import { createSoftDeleteMiddleware } from 'prisma-soft-delete-middleware';
 
 @Injectable()
 class PrismaService
-  extends PrismaClient<Prisma.PrismaClientOptions, Prisma.LogLevel>
+  extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);

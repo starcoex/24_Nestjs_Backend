@@ -1,4 +1,4 @@
-FROM node:18.16
+FROM node:latest
 
 COPY ./package.json /starcoex/nestjs-backend
 COPY ./package-lock.json /starcoex/nestjs-backend
