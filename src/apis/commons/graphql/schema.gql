@@ -1,0 +1,271 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AllProductOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  products: [Product!]
+}
+
+input AuthLoginInput {
+  email: String!
+  password: String!
+}
+
+type AuthLoginOutput {
+  accessToken: String
+  error: String
+  id: String
+  ok: Boolean!
+  refreshToken: String
+}
+
+input AuthSignInInput {
+  email: String!
+  password: String!
+}
+
+type AuthSignInOutput {
+  accessToken: String!
+  error: String
+  id: String
+  ok: Boolean!
+  refreshToken: String!
+  user: User
+}
+
+input AuthSignOutInput {
+  id: String!
+}
+
+type AuthSignOutOutput {
+  error: String
+  id: String
+  loggedOut: Boolean!
+  ok: Boolean!
+}
+
+input AuthSignUpInput {
+  email: String!
+  name: String
+  password: String!
+}
+
+type AuthSignUpOutput {
+  accessToken: String!
+  error: String
+  id: String
+  ok: Boolean!
+  refreshToken: String!
+  user: User
+}
+
+input CancelPointTransactionInput {
+  impUid: String!
+}
+
+input CreateForPaymentInput {
+  amount: Int
+  impUid: String
+  status: POINT_TRANSACTION_STATUS_ENUM
+}
+
+type CreateForPaymentOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  pointTransaction: PointTransaction
+}
+
+input CreateProductInput {
+  description: String!
+  name: String!
+  price: Int!
+}
+
+type CreateProductOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  product: Product
+}
+
+input CreateProductSalesLocationInput {
+  address: String!
+  addressDetail: String!
+  lat: Float!
+  lng: Float!
+  meetingTime: DateTime
+}
+
+type CreateProductSalesLocationOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  productSalesLocation: ProductSalesLocation
+}
+
+input CreateUserInput {
+  email: String!
+  name: String
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DeleteProductOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  product: Product
+}
+
+enum EnumService {
+  Cloudinary
+  S3Storage
+  Web3Storage
+}
+
+input FindOneUserInput {
+  email: String!
+}
+
+type FindOneUserOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  user: User
+}
+
+type Mutation {
+  cancelPointTransaction(input: CancelPointTransactionInput!): PointTransaction!
+  createPointTransaction(input: CreateForPaymentInput!): CreateForPaymentOutput!
+  createProduct(input: CreateProductInput!): CreateProductOutput!
+  createProductSalesLocation(input: CreateProductSalesLocationInput!): CreateProductSalesLocationOutput!
+  createUser(input: CreateUserInput!): User!
+  deleteProduct(productId: String!): DeleteProductOutput!
+  login(input: AuthLoginInput!): AuthLoginOutput!
+  restoreAccessToken: String!
+  signIn(input: AuthSignInInput!): AuthSignInOutput!
+  signOut(input: AuthSignOutInput!): AuthSignOutOutput!
+  signup(input: AuthSignUpInput!): AuthSignUpOutput!
+  updateProduct(input: UpdateProductInput!, productId: String!): UpdateProductOutput!
+  uploadFile(file: Upload!): String!
+  uploadFileGoogleCloud(file: Upload!): String!
+  uploadGoogleCloudMultiple(files: [Upload!]!): [String!]!
+  uploadMultipleFiles(files: [Upload!]!, setting: UploadParamInput!): [UploadSingle!]!
+  uploadSingleFiles(file: Upload!, setting: UploadParamInput): UploadSingle!
+}
+
+enum POINT_TRANSACTION_STATUS_ENUM {
+  Cancel
+  Payment
+}
+
+type PointTransaction {
+  amount: Int!
+  createdAt: DateTime!
+  id: String!
+  impUid: String!
+  status: POINT_TRANSACTION_STATUS_ENUM!
+  updatedAt: DateTime
+  user: User
+}
+
+type Product {
+  createdAt: DateTime!
+  description: String!
+  id: String!
+  isSoldOut: Boolean!
+  name: String!
+  price: Int!
+  productCategory: ProductCategory
+  productSalesLocation: ProductSalesLocation
+  productTags: [ProductTag!]
+  updatedAt: DateTime
+}
+
+type ProductCategory {
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  products: [Product!]
+  updatedAt: DateTime
+}
+
+type ProductSalesLocation {
+  address: String!
+  addressDetail: String!
+  createdAt: DateTime!
+  id: String!
+  lat: Float!
+  lng: Float!
+  meetingTime: DateTime
+  product: Product
+  updatedAt: DateTime
+}
+
+type ProductTag {
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  products: [Product!]
+  updatedAt: DateTime
+}
+
+type Query {
+  AllProducts: AllProductOutput!
+  OneProduct(productId: String!): Product!
+  findOneUser(input: FindOneUserInput!): FindOneUserOutput!
+}
+
+input UpdateProductInput {
+  description: String
+  id: String
+  name: String
+  price: Int
+}
+
+type UpdateProductOutput {
+  error: String
+  id: String
+  ok: Boolean!
+  product: Product
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UploadParamInput {
+  folder: String!
+  uploadService: EnumService!
+}
+
+type UploadSingle {
+  bytes: Int!
+  createdAt: DateTime!
+  folder: String!
+  format: String!
+  height: Int!
+  id: String!
+  updatedAt: DateTime
+  url: String!
+  width: Int!
+}
+
+type User {
+  createdAt: DateTime!
+  email: String!
+  id: String!
+  name: String
+  password: String!
+  point: Int!
+  pointsTransactions: [PointTransaction!]
+  products: [Product!]
+  updatedAt: DateTime
+}

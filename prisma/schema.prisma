@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum POINT_TRANSACTION_STATUS_ENUM {
+  Cancel
+  Payment
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  password     String
+  name         String?
+  avatar       String?
+  refreshToken String?
+  point        Int?      @default(0)
+  createdAt    DateTime  @default(dbgenerated("NOW()")) @db.DateTime
+  updatedAt    DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+  products     Product[]
+  portOnes     PortOne[]
+
+  @@index([email])
+  @@map(name: "users")
+}
+
+model Product {
+  id                     String                @id @default(uuid())
+  name                   String                @db.VarChar(20)
+  description            String                @db.Text
+  price                  Int
+  isSoldOut              Boolean               @default(false)
+  user                   User                  @relation(fields: [userId], references: [id])
+  userId                 String
+  productSalesLocation   ProductSalesLocation? @relation(fields: [productSalesLocationId], references: [id])
+  productSalesLocationId String?               @unique
+  productCategory        ProductCategory       @relation(fields: [productCategoryId], references: [id])
+  productCategoryId      String
+  productTags            ProductTag[]
+  createdAt              DateTime              @default(dbgenerated("NOW()")) @db.DateTime
+  updatedAt              DateTime              @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+  deletedAt              DateTime?             @db.DateTime
+
+  @@map(name: "products")
+}
+
+model ProductCategory {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(dbgenerated("NOW()")) @db.DateTime
+  updatedAt DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+  products  Product[]
+
+  @@map(name: "productcategories")
+}
+
+model ProductSalesLocation {
+  id            String    @id @default(uuid())
+  address       String    @db.VarChar(255)
+  addressDetail String    @db.VarChar(255)
+  lat           Decimal   @db.Decimal(9, 6)
+  lng           Decimal   @db.Decimal(9, 6)
+  meetingTime   DateTime?
+  createdAt     DateTime  @default(dbgenerated("NOW()")) @db.DateTime
+  updatedAt     DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+  product       Product?
+
+  @@map(name: "productSaleslocations")
+}
+
+model ProductTag {
+  id        String    @id @default(uuid())
+  name      String    @db.VarChar(255)
+  products  Product[]
+  createdAt DateTime  @default(dbgenerated("NOW()")) @db.DateTime
+  updatedAt DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.DateTime
+
+  @@map(name: "productTags")
+}
+
+model PortOne {
+  id        String                        @id @default(uuid())
+  impUid    String                        @unique
+  amount    Int
+  status    POINT_TRANSACTION_STATUS_ENUM
+  user      User                          @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime                      @default(dbgenerated("NOW()")) @db.DateTime
+}
